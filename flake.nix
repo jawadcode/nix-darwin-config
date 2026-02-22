@@ -2,12 +2,12 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -82,11 +82,16 @@
 
       homebrew = {
         enable = true;
-        brews = [];
-        casks = ["microsoft-office" "skim" "processing"];
+        brews = [
+          {
+            name = "syncthing";
+            start_service = true;
+          }
+        ];
+        casks = ["microsoft-office" "microsoft-teams" "skim" "jetbrains-toolbox" "spotify" "whatsapp" "keyboardcleantool" "betterdisplay"];
       };
 
-      services.aerospace.enable = true;
+      services.aerospace.enable = false;
 
       security.pam.services.sudo_local.touchIdAuth = true;
 

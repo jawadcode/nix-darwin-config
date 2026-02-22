@@ -11,11 +11,9 @@ in {
   home.username = "qak";
   home.homeDirectory = "/Users/qak";
   home.packages = with pkgs; [
-    nix-your-shell
     emacs-lsp-booster
     discord
-    logisim-evolution
-    rars
+    obsidian
   ];
 
   programs.fish = {
@@ -39,7 +37,11 @@ in {
     '';
   };
 
+  programs.starship.enable = true;
+
   programs.nix-index.enable = true;
+
+  programs.nix-your-shell.enable = true;
 
   programs.direnv = {
     enable = true;
@@ -82,9 +84,6 @@ in {
       }
     '';
   };
-
-  # Doesn't exist????
-  # programs.discord.enable = true;
 
   programs.helix = {
     enable = true;
@@ -146,7 +145,7 @@ in {
   programs.emacs = {
     enable = true;
     package = pkgs.emacs;
-    extraPackages = epkgs: with epkgs; [treesit-grammars.with-all-grammars];
+    extraPackages = epkgs: [epkgs.treesit-grammars.with-all-grammars];
   };
 
   programs.vscode = {
@@ -157,6 +156,7 @@ in {
         "editor.fontFamily" = "'Iosevka Term SS07'";
         "editor.fontSize" = 18;
         "rust-analyzer.server.path" = "rust-analyzer";
+        "chat.disableAIFeatures" = true;
       };
       extensions = with pkgs.vscode-extensions; [
         astro-build.astro-vscode
