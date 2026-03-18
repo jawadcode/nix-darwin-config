@@ -11,9 +11,10 @@ in {
   home.username = "qak";
   home.homeDirectory = "/Users/qak";
   home.packages = with pkgs; [
-    emacs-lsp-booster
-    discord
     obsidian
+    discord
+    emacs-lsp-booster
+    jellyfin-desktop
   ];
 
   programs.fish = {
