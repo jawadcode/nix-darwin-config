@@ -2,12 +2,12 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -20,13 +20,13 @@
       flake = false;
     };
 
-    mac-app-util = {
-      url = "github:hraban/mac-app-util";
-      inputs = {
-        # cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    # mac-app-util = {
+    #   url = "github:hraban/mac-app-util";
+    #   inputs = {
+    #     # cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
+    #     nixpkgs.follows = "nixpkgs";
+    #   };
+    # };
   };
 
   outputs = inputs @ {
@@ -36,7 +36,7 @@
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
-    mac-app-util,
+    # mac-app-util,
     nixpkgs,
   }: let
     system = "x86_64-darwin";
@@ -91,8 +91,6 @@
         casks = ["microsoft-office" "microsoft-teams" "skim" "jetbrains-toolbox" "spotify" "whatsapp" "keyboardcleantool" "betterdisplay"];
       };
 
-      services.aerospace.enable = false;
-
       security.pam.services.sudo_local.touchIdAuth = true;
 
       nixpkgs.hostPlatform = system;
@@ -106,8 +104,24 @@
       modules = [
         {
           nix = {
-            optimise.automatic = true;
             settings.experimental-features = "nix-command flakes";
+            distributedBuilds = true;
+            buildMachines = [
+              {
+                hostName = "antics.local";
+                system = "x86_64-darwin";
+                sshUser = "nix-remote";
+                maxJobs = 8;
+                speedFactor = 3;
+                supportedFeatures = [
+                  "nixos-test"
+                  "benchmark"
+                  "big-parallel"
+                ];
+              }
+            ];
+
+            optimise.automatic = true;
           };
         }
         nix-homebrew.darwinModules.nix-homebrew
@@ -139,11 +153,11 @@
           homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
         })
         configuration
-        mac-app-util.darwinModules.default
+        # mac-app-util.darwinModules.default
         home-manager.darwinModules.home-manager
         {
           home-manager = {
-            sharedModules = [mac-app-util.homeManagerModules.default];
+            # sharedModules = [mac-app-util.homeManagerModules.default];
             useGlobalPkgs = true;
             useUserPackages = true;
             users.qak = import ./home.nix;

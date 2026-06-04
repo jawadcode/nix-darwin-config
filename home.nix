@@ -4,7 +4,6 @@
   ...
 }: let
   getExe = pkgs.lib.meta.getExe;
-  getExe' = pkgs.lib.meta.getExe';
 in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -15,6 +14,7 @@ in {
     discord
     emacs-lsp-booster
     jellyfin-desktop
+    rectangle
   ];
 
   programs.fish = {
@@ -164,6 +164,8 @@ in {
         mkhl.direnv
         rust-lang.rust-analyzer
         myriad-dreamin.tinymist
+        haskell.haskell
+        justusadam.language-haskell
         ocamllabs.ocaml-platform
         svelte.svelte-vscode
         vscodevim.vim
