@@ -92,7 +92,7 @@
         stateVersion = 6;
         defaults = {
           startup.chime = true;
-          NSGlobalDomain.AppleFontSmoothing = true;
+          NSGlobalDomain.AppleFontSmoothing = 3;
           dock = {
             autohide = true;
             orientation = "left";
