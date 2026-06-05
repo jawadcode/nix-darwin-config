@@ -67,6 +67,7 @@
         ibm-plex
         (iosevka-bin.override {variant = "SS07";})
         (callPackage ./iosevka-term-ss07-nerd-font.nix {})
+        nerd-fonts.symbols-only
       ];
 
       programs.fish.enable = true;
