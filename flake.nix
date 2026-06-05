@@ -19,14 +19,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-
-    # mac-app-util = {
-    #   url = "github:hraban/mac-app-util";
-    #   inputs = {
-    #     # cl-nix-lite.url = "github:r4v3n6101/cl-nix-lite/url-fix";
-    #     nixpkgs.follows = "nixpkgs";
-    #   };
-    # };
   };
 
   outputs = inputs @ {
@@ -36,7 +28,6 @@
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
-    # mac-app-util,
     nixpkgs,
   }: let
     system = "x86_64-darwin";
@@ -88,15 +79,26 @@
             start_service = true;
           }
         ];
-        casks = ["microsoft-office" "microsoft-teams" "skim" "jetbrains-toolbox" "spotify" "whatsapp" "keyboardcleantool" "betterdisplay"];
+        casks = ["microsoft-office" "microsoft-teams" "skim" "jetbrains-toolbox" "spotify" "whatsapp" "keyboardcleantool" "betterdisplay" "jellyfin-media-player" "jimeh/emacs-builds/emacs-app"];
       };
 
       security.pam.services.sudo_local.touchIdAuth = true;
 
       nixpkgs.hostPlatform = system;
-      system.primaryUser = "qak";
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-      system.stateVersion = 6;
+      system = {
+        primaryUser = "qak";
+        configurationRevision = self.rev or self.dirtyRev or null;
+        stateVersion = 6;
+        defaults = {
+          dock = {
+            autohide = true;
+            orientation = "left";
+            show-recents = false;
+            wvous-tl-corner = 11;
+          };
+          NSGlobalDomain.AppleFontSmoothing = true;
+        };
+      };
     };
   in {
     darwinConfigurations."Jawads-MacBook-Air" = nix-darwin.lib.darwinSystem {
@@ -145,7 +147,7 @@
             # Optional: Enable fully-declarative tap management
             #
             # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-            mutableTaps = false;
+            mutableTaps = true;
           };
         }
         # Optional: Align homebrew taps config with nix-homebrew
@@ -153,11 +155,9 @@
           homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
         })
         configuration
-        # mac-app-util.darwinModules.default
         home-manager.darwinModules.home-manager
         {
           home-manager = {
-            # sharedModules = [mac-app-util.homeManagerModules.default];
             useGlobalPkgs = true;
             useUserPackages = true;
             users.qak = import ./home.nix;

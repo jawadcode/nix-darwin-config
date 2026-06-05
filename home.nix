@@ -13,7 +13,7 @@ in {
     obsidian
     discord
     emacs-lsp-booster
-    jellyfin-desktop
+    # jellyfin-media-player
     rectangle
   ];
 
@@ -82,6 +82,7 @@ in {
         font = wezterm.font_with_fallback({ "IosevkaTermSS07 Nerd Font", "Apple Color Emoji" }),
         font_size = 15.5,
         hide_tab_bar_if_only_one_tab = true,
+        adjust_window_size_when_changing_font_size = false,
       }
     '';
   };
@@ -143,11 +144,11 @@ in {
     };
   };
 
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs;
-    extraPackages = epkgs: [epkgs.treesit-grammars.with-all-grammars];
-  };
+  # programs.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs-macport;
+  #   extraPackages = epkgs: [epkgs.treesit-grammars.with-all-grammars];
+  # };
 
   programs.vscode = {
     enable = true;
