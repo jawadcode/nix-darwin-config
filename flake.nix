@@ -90,13 +90,25 @@
         configurationRevision = self.rev or self.dirtyRev or null;
         stateVersion = 6;
         defaults = {
+          startup.chime = true;
+          NSGlobalDomain.AppleFontSmoothing = true;
           dock = {
             autohide = true;
             orientation = "left";
             show-recents = false;
             wvous-tl-corner = 11;
           };
-          NSGlobalDomain.AppleFontSmoothing = true;
+          finder = {
+            NewWindowTarget = "Documents";
+            ShowMountedServersOnDesktop = true;
+            ShowPathbar = true;
+            ShowStatusBar = true;
+          };
+          trackpad = {
+            Clicking = true;
+            Dragging = true;
+            FirstClickThreshold = 0;
+          };
         };
       };
     };
